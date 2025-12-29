@@ -53,7 +53,6 @@ public:
         return checkFlag(flag);
     }
     static void setFlag(s32 id);
-    static bool checkTreasureTempCollect(u16 itemId);
 
     void setItemPosition(const mVec3_c &);
     void getItemFromBWheelItem();
