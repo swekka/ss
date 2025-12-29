@@ -99,22 +99,17 @@ public:
         ELDIN_ROLLER,
     };
 
+private:
     void startAllIconsIn();
-    void setBugsNumLevel(u8 level) {
-        mBugsNumLevel = level;
-    }
-    void setBug(s32 slot, s32 bugIndex);
-    void collectBug(s32 slot);
-    void startBugsFlash();
-    bool isSlotIconOnEndReached(s32 slot) const;
-    bool isSlotBugCollected(s32 slot) const;
-
     void startOut();
     void startIn();
-    void startOutTemp();
-
-private:
+    void startOutForced();
+    void collectBug(s32 slot);
+    void startBugsFlash();
+    void setBug(s32 slot, s32 bugIndex);
+    bool isSlotIconOnEndReached(s32 slot) const;
     bool isSlotIconOnEnabled(s32 slot) const;
+    bool isSlotBugCollected(s32 slot);
     void resetBugIconsIn();
     void resetIn();
     void resetOut();
@@ -152,12 +147,12 @@ private:
 class dLytMiniGameTime_c {
 public:
     enum Variant_e {
-        TIME_VARIANT_INSECT_CAPTURE,
-        TIME_VARIANT_SPIRAL_CHARGE_TUTORIAL,
-        TIME_VARIANT_PUMPKIN_ARCHERY,
-        TIME_VARIANT_ROLLERCOASTER,
-        TIME_VARIANT_BOSS_RUSH,
-        TIME_VARIANT_TRIAL_TIME_ATTACK,
+        TIME_VARIANT_0,
+        TIME_VARIANT_1,
+        TIME_VARIANT_2,
+        TIME_VARIANT_3,
+        TIME_VARIANT_4,
+        TIME_VARIANT_5,
     };
 
 public:
@@ -190,29 +185,27 @@ public:
         field_0x7EE = v;
     }
 
-    void fn_8028DD80();
-    void startOut();
-    void startIn();
-    void startOutTemp();
-    void startFinish();
-    void startAlphaIn();
-    void startAlphaOut();
-
-    void setTimerValueInMilliSeconds(s32 time);
-    void setTimerSecondsValueInMilliSeconds(s32 time);
-    void setBestTime(s32 time);
-    void setShowBestTime(bool show);
-
 private:
     enum TimeFormat_e {
         TIMER_LONG,
         TIMER_SECONDS,
     };
 
+    void fn_8028DD80();
+    void fn_8028DE40();
+    void fn_8028DED0();
+    void fn_8028DFD0();
+    void startAlphaIn();
+    void startAlphaOut();
+    void startFinish();
     void startLoop();
+    void setTimerValueInMilliSeconds(s32 time);
     void updateLongTimer();
+    void setTimerSecondsValueInMilliSeconds(s32 time);
     void updateSecondsTimer();
     void saveSecondsTimer();
+    void setBestTime(s32 time);
+    void setShowBestTime(bool show);
     void resetIn();
     void resetOut();
     void resetAlphaIn();
@@ -271,6 +264,7 @@ public:
     bool draw();
     void init();
 
+private:
     void startCountdown();
     void startCountdown120();
     void startFinish();
@@ -278,8 +272,6 @@ public:
     bool isCountdownEndReached() const;
     bool isFinishEndReached() const;
     bool isTimeupEndReached() const;
-
-private:
     void resetPlayedSounds();
     void resetCountdown();
     void resetFinish();
@@ -306,11 +298,11 @@ private:
 class dLytMiniGameScore_c {
 public:
     enum Variant_e {
-        SCORE_VARIANT_BAMBOO_CUTTING,
-        SCORE_VARIANT_FUN_FUN_ISLAND,
-        SCORE_VARIANT_THRILL_DIGGER,
-        SCORE_VARIANT_PUMPKIN_ARCHERY,
-        SCORE_VARIANT_SPIRAL_CHARGE_TUTORIAL,
+        SCORE_VARIANT_0,
+        SCORE_VARIANT_1,
+        SCORE_VARIANT_2,
+        SCORE_VARIANT_3,
+        SCORE_VARIANT_4,
     };
 
 public:
@@ -333,7 +325,7 @@ public:
           field_0x814(false),
           field_0x815(false),
           field_0x816(false),
-          mVariant(SCORE_VARIANT_BAMBOO_CUTTING),
+          mVariant(SCORE_VARIANT_0),
           field_0x81C(0),
           field_0x820(false),
           field_0x824(0),
@@ -358,31 +350,22 @@ public:
         field_0x816 = v;
     }
 
-    void setField_0x828(bool v) {
-        field_0x828 = v;
-    }
-
-    s32 getScore() const {
-        return mScore;
-    }
-
-    void startIn();
-    void startOut();
-    void startOutTemp();
-    void setScore(s32 score);
+private:
     void fn_80291410();
+    void fn_802915B0();
+    void fn_80291640();
+    void fn_80291740();
     void startAlphaIn();
     void startAlphaOut();
-    void fn_80291D40(s32 score);
-    void fn_80291ED0(s32);
-    void startFinish();
-
-private:
     void startGetScore();
+    void startFinish();
     void startLoop();
+    void setScore(s32 score);
     void fn_80291BC0();
+    void fn_80291D40(s32 arg);
     bool hasIncreasedScore() const;
     bool hasDecreasedScore() const;
+    void fn_80291ED0(s32);
     void fn_80291EF0();
     void increaseScore(s32);
     void fn_80292040();
@@ -472,12 +455,11 @@ public:
     bool draw();
     void init();
 
-    void setScoreUp(s32 score);
-    void setScoreDown(s32 score);
-
 private:
     static dLytMiniGameScoreSd_c *sInstance;
 
+    void setScoreUp(s32 score);
+    void setScoreDown(s32 score);
     void setScoreInternal(s32 score);
     void setHighestDigitIndex(s32);
     void setDigit(s32 digitIndex, s32 number);
@@ -503,18 +485,15 @@ class dLytMiniGame_c : public dBase_c {
 public:
     enum Variant_e {
         VARIANT_0,
-        VARIANT_BAMBOO_CUTTING,
-        VARIANT_FUN_FUN_ISLAND,
-        VARIANT_THRILL_DIGGER,
-        VARIANT_INSECT_CAPTURE,
-        VARIANT_SPIRAL_CHARGE_TUTORIAL,
-        VARIANT_PUMPKIN_ARCHERY,
-        VARIANT_ROLLERCOASTER,
-        VARIANT_BOSS_RUSH,
-        VARIANT_TRIAL_TIME_ATTACK,
-        // These are created by dFlow_c and correspond to above entries.
-        // They also cause things to behave a bit differently. What is the purpose
-        // of these special variants?
+        VARIANT_1,
+        VARIANT_2,
+        VARIANT_3,
+        VARIANT_4,
+        VARIANT_5,
+        VARIANT_6,
+        VARIANT_7,
+        VARIANT_8,
+        VARIANT_9,
         VARIANT_10,
         VARIANT_11,
         VARIANT_12,
@@ -536,12 +515,12 @@ private:
 
 public:
     dLytMiniGame_c()
-        : field_0x0068(false),
-          field_0x0069(false),
-          field_0x006A(false),
-          field_0x006B(false),
-          field_0x006C(false),
-          field_0x006D(false),
+        : field_0x0068(0),
+          field_0x0069(0),
+          field_0x006A(0),
+          field_0x006B(0),
+          field_0x006C(0),
+          field_0x006D(0),
           mVariant(1),
           field_0x3864(0),
           field_0x3865(0),
@@ -560,34 +539,27 @@ public:
     }
 
     /** Updates some window  */
-    void startCountdown();
+    void fn_80295940();
     /** ??? */
-    void startFinish();
-    void fn_80295A20();
+    void fn_80295980();
     /** Checks to see if in BAMBOO_CUTTING .. BOSS_RUSH and returns some boolean (start?) */
-    bool isStartCountdownDone();
+    bool fn_80295AB0();
     /** Checks to see if in BAMBOO_CUTTING .. BOSS_RUSH and returns some boolean (end?) */
-    bool isFinishAnimDone();
-    bool isTimeupAnimDone();
-
-    void fn_80295B20(s32);
-    void fn_80295B30(s32);
+    bool fn_80295AD0();
 
     void setHighscore(s32 time);
 
     /** GUESS: sets the start for the high score? */
-    void setShowBestTime(bool);
+    void fn_80295CB0(bool);
 
     void timeRelatedExecute();
     void scoreRelatedExecute();
 
     void setDisplayedTime(s32 time);
-    void setDisplayedPoints(s32 points);
+    void setDisplayedPoints(s32 time);
 
     void timeRelated();
     void scoreRelated();
-
-    void fn_80295900(s32);
 
     /** GUESS: Assumption based on function caller */
     void setComplete() {
@@ -601,45 +573,16 @@ private:
     bool loadData(const char *name, s32 slot);
     void unloadData(const char *name);
     void attachLoadedData(const char *name, d2d::ResAccIf_c &resAcc);
+    
 
     void init();
 
-    void startBugsAllIconsIn();
-    void set5Bugs();
-    void set10Bugs();
-    void reInitBugs();
-    void setBug(s32 slot, s32 bugIndex);
-    void collectBug(s32 slot);
-    void startBugsFlash();
-    bool isBugIconOnEndReached(s32 slot) const;
-    bool isBugCollected(s32 slot) const;
-    void fn_80295D80();
-    void fn_80295D90(s32 points);
-    void getPumpkin(const mVec3_c &pumpkinPos, s32 unk, bool doubleScore);
-    bool fn_80295DB0();
-    bool isInEvent() const;
-    bool isPopupOpen() const;
-    bool isPopupOpenExceptHelp() const;
-    bool isFadingOut() const;
-
-    void fn_80295F90();
-    void fn_80296000();
-    void fn_80296070();
-    void fn_80296150();
-    void fn_80296210();
-    void fn_802962A0();
-    void fn_80296330();
-
-    // These two do the same thing
-    void fn_802963E0();
-    void fn_80296480();
-
-    /* 0x0068 */ bool field_0x0068;
-    /* 0x0069 */ bool field_0x0069;
-    /* 0x006A */ bool field_0x006A;
-    /* 0x006B */ bool field_0x006B;
-    /* 0x006C */ bool field_0x006C;
-    /* 0x006D */ bool field_0x006D;
+    /* 0x0068 */ u8 field_0x0068;
+    /* 0x0069 */ u8 field_0x0069;
+    /* 0x006A */ u8 field_0x006A;
+    /* 0x006B */ u8 field_0x006B;
+    /* 0x006C */ u8 field_0x006C;
+    /* 0x006D */ u8 field_0x006D;
 
     /* 0x0070 */ d2d::ResAccIf_c mResAccStart;
     /* 0x03E0 */ d2d::ResAccIf_c mResAccScore;

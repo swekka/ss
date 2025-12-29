@@ -11,7 +11,6 @@
 #include "f/f_profile_name.h"
 #include "m/m2d.h"
 #include "m/m_angle.h"
-#include "m/m_fader_base.h"
 #include "m/m_vec.h"
 #include "s/s_FPhase.h"
 #include "s/s_State.hpp"
@@ -209,14 +208,6 @@ public:
 
     bool isFaderSettled() const {
         return mFader.isSettled();
-    }
-
-    bool isFadingOut() const {
-        return mFader.isStatus(mFaderBase_c::FADING_OUT);
-    }
-
-    bool isFadingIn() const {
-        return mFader.isStatus(mFaderBase_c::FADING_IN);
     }
 
     f32 targetingScreenFn_801BBEC0() const {
