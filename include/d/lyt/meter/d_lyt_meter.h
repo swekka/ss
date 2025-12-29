@@ -452,14 +452,6 @@ public:
         }
     }
 
-    static bool getfn_800C9F70() {
-        if (sInstance != nullptr) {
-            return sInstance->mMain.fn_800C9F70();
-        } else {
-            return false;
-        }
-    }
-
     static bool getfn_800C9FE0() {
         if (sInstance != nullptr) {
             return sInstance->mMain.fn_800C9FE0();
