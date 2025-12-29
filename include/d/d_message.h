@@ -203,20 +203,6 @@ protected:
 
 class dMessage_c : public dBase_c {
 public:
-    enum Minigame_e {
-        MG_THRILL_DIGGER = 0,
-        MG_BAMBOO_CUTTING,
-        MG_INSECT_CAPTURE,
-        MG_ROLLERCOASTER,
-        MG_PUMPKIN_ARCHERY,
-        MG_FUN_FUN_ISLAND,
-        MG_TRIAL_TIME_ATTACK,
-        MG_BOSS_RUSH,
-
-        MG_NONE,
-    };
-
-public:
     dMessage_c();
     virtual ~dMessage_c() {
         sInstance = nullptr;
@@ -290,23 +276,23 @@ public:
     }
 
     void setMiniGameVariant(s32 v) {
-        mMinigameVariant = v;
+        mMiniGameVariant = v;
     }
 
     s32 getMiniGameVariant() const {
-        return mMinigameVariant;
+        return mMiniGameVariant;
     }
 
     void setField_0x344(s32 v) {
         field_0x344 = v;
     }
 
-    bool hasSetMinigameResult() const {
-        return mHasSetMinigameResult;
+    u8 getField_0x340() const {
+        return field_0x340;
     }
 
-    void setHasSetMinigameResult(bool v) {
-        mHasSetMinigameResult = v;
+    void setField_0x340(u8 v) {
+        field_0x340 = v;
     }
 
     static bool isValidTextLabel(const char *name);
@@ -390,8 +376,8 @@ private:
 
     /* 0x334 */ u32 mMinigameResultPoints;
     /* 0x338 */ u32 mMinigameTime;
-    /* 0x33C */ s32 mMinigameVariant;
-    /* 0x340 */ bool mHasSetMinigameResult;
+    /* 0x33C */ s32 mMiniGameVariant;
+    /* 0x340 */ u8 field_0x340;
     /* 0x344 */ s32 field_0x344;
 };
 

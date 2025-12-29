@@ -854,14 +854,14 @@ bool dLytMiniGameTime_c::execute() {
 
         if (isAlphaInEndReached()) {
             stopAlphaIn();
-            if (mResultMode) {
+            if (field_0x7EE) {
                 startLoop();
             }
         }
 
         if (isAlphaOutEndReached()) {
             stopAlphaOut();
-            if (mResultMode) {
+            if (field_0x7EE) {
                 stopLoop();
                 resetLoop();
             }
@@ -1919,7 +1919,7 @@ bool dLytMiniGameScore_c::execute() {
 
     if (mIsVisible) {
         fn_80291BC0();
-        if (!mResultMode) {
+        if (!field_0x816) {
             switch (mVariant) {
                 case SCORE_VARIANT_BAMBOO_CUTTING:
                     if (hasIncreasedScore()) {
@@ -1969,14 +1969,14 @@ bool dLytMiniGameScore_c::execute() {
 
         if (isAlphaInEndReached()) {
             stopAlphaIn();
-            if (mResultMode) {
+            if (field_0x816) {
                 startLoop();
             }
         }
 
         if (isAlphaOutEndReached()) {
             stopAlphaOut();
-            if (mResultMode) {
+            if (field_0x816) {
                 stopLoop();
                 resetLoop();
             }
@@ -2001,7 +2001,7 @@ bool dLytMiniGameScore_c::execute() {
         mLyt.calc();
     }
 
-    if (!mResultMode && mVariant == SCORE_VARIANT_BAMBOO_CUTTING && hasIncreasedScore()) {
+    if (!field_0x816 && mVariant == SCORE_VARIANT_BAMBOO_CUTTING && hasIncreasedScore()) {
         dSndSmallEffectMgr_c::GetInstance()->playMinigameScoreUpSound(mScore);
     }
 
@@ -3381,7 +3381,7 @@ int dLytMiniGame_c::create() {
             mStart.build(&mResAccStart);
             break;
         }
-        case VARIANT_BAMBOO_CUTTING_RESULT: {
+        case VARIANT_10: {
             if (loadData(sMiniGameScore, SLOT_MINI_GAME_SCORE)) {
                 return NOT_READY;
             }
@@ -3390,11 +3390,11 @@ int dLytMiniGame_c::create() {
             }
             attachLoadedData(sMiniGameScore, mResAccScore);
             mScore.setVariant(dLytMiniGameScore_c::SCORE_VARIANT_BAMBOO_CUTTING);
-            mScore.setResultMode(true);
+            mScore.setField_0x816(true);
             mScore.build(&mResAccScore);
             break;
         }
-        case VARIANT_THRILL_DIGGER_RESULT: {
+        case VARIANT_11: {
             if (loadData(sMiniGameScore, SLOT_MINI_GAME_SCORE)) {
                 return NOT_READY;
             }
@@ -3403,11 +3403,11 @@ int dLytMiniGame_c::create() {
             }
             attachLoadedData(sMiniGameScore, mResAccScore);
             mScore.setVariant(dLytMiniGameScore_c::SCORE_VARIANT_THRILL_DIGGER);
-            mScore.setResultMode(true);
+            mScore.setField_0x816(true);
             mScore.build(&mResAccScore);
             break;
         }
-        case VARIANT_INSECT_CAPTURE_RESULT: {
+        case VARIANT_12: {
             if (loadData(sMiniGameTime, SLOT_MINI_GAME_TIME)) {
                 return NOT_READY;
             }
@@ -3416,11 +3416,11 @@ int dLytMiniGame_c::create() {
             }
             attachLoadedData(sMiniGameTime, mResAccTime);
             mTime.setVariant(dLytMiniGameTime_c::TIME_VARIANT_INSECT_CAPTURE);
-            mTime.setResultMode(true);
+            mTime.setField_0x7EE(true);
             mTime.build(&mResAccTime);
             break;
         }
-        case VARIANT_PUMPKIN_ARCHERY_RESULT: {
+        case VARIANT_13: {
             if (loadData(sMiniGameScore, SLOT_MINI_GAME_SCORE)) {
                 return NOT_READY;
             }
@@ -3429,11 +3429,11 @@ int dLytMiniGame_c::create() {
             }
             attachLoadedData(sMiniGameScore, mResAccScore);
             mScore.setVariant(dLytMiniGameScore_c::SCORE_VARIANT_PUMPKIN_ARCHERY);
-            mScore.setResultMode(true);
+            mScore.setField_0x816(true);
             mScore.build(&mResAccScore);
             break;
         }
-        case VARIANT_ROLLERCOASTER_RESULT: {
+        case VARIANT_14: {
             if (loadData(sMiniGameTime, SLOT_MINI_GAME_TIME)) {
                 return NOT_READY;
             }
@@ -3442,11 +3442,11 @@ int dLytMiniGame_c::create() {
             }
             attachLoadedData(sMiniGameTime, mResAccTime);
             mTime.setVariant(dLytMiniGameTime_c::TIME_VARIANT_ROLLERCOASTER);
-            mTime.setResultMode(true);
+            mTime.setField_0x7EE(true);
             mTime.build(&mResAccTime);
             break;
         }
-        case VARIANT_BOSS_RUSH_RESULT: {
+        case VARIANT_15: {
             if (loadData(sMiniGameTime, SLOT_MINI_GAME_TIME)) {
                 return NOT_READY;
             }
@@ -3455,11 +3455,11 @@ int dLytMiniGame_c::create() {
             }
             attachLoadedData(sMiniGameTime, mResAccTime);
             mTime.setVariant(dLytMiniGameTime_c::TIME_VARIANT_BOSS_RUSH);
-            mTime.setResultMode(true);
+            mTime.setField_0x7EE(true);
             mTime.build(&mResAccTime);
             break;
         }
-        case VARIANT_TRIAL_TIME_ATTACK_RESULT: {
+        case VARIANT_16: {
             if (loadData(sMiniGameTime, SLOT_MINI_GAME_TIME)) {
                 return NOT_READY;
             }
@@ -3468,7 +3468,7 @@ int dLytMiniGame_c::create() {
             }
             attachLoadedData(sMiniGameTime, mResAccTime);
             mTime.setVariant(dLytMiniGameTime_c::TIME_VARIANT_TRIAL_TIME_ATTACK);
-            mTime.setResultMode(true);
+            mTime.setField_0x7EE(true);
             mTime.build(&mResAccTime);
             break;
         }
@@ -3562,37 +3562,37 @@ int dLytMiniGame_c::doDelete() {
             unloadData(sMiniGameTime);
             break;
         }
-        case VARIANT_BAMBOO_CUTTING_RESULT: {
+        case VARIANT_10: {
             mResAccScore.detach();
             unloadData(sMiniGameScore);
             break;
         }
-        case VARIANT_THRILL_DIGGER_RESULT: {
+        case VARIANT_11: {
             mResAccScore.detach();
             unloadData(sMiniGameScore);
             break;
         }
-        case VARIANT_INSECT_CAPTURE_RESULT: {
+        case VARIANT_12: {
             mResAccTime.detach();
             unloadData(sMiniGameTime);
             break;
         }
-        case VARIANT_PUMPKIN_ARCHERY_RESULT: {
+        case VARIANT_13: {
             mResAccScore.detach();
             unloadData(sMiniGameScore);
             break;
         }
-        case VARIANT_ROLLERCOASTER_RESULT: {
+        case VARIANT_14: {
             mResAccTime.detach();
             unloadData(sMiniGameTime);
             break;
         }
-        case VARIANT_BOSS_RUSH_RESULT: {
+        case VARIANT_15: {
             mResAccTime.detach();
             unloadData(sMiniGameTime);
             break;
         }
-        case VARIANT_TRIAL_TIME_ATTACK_RESULT: {
+        case VARIANT_16: {
             mResAccTime.detach();
             unloadData(sMiniGameTime);
             break;
@@ -3606,21 +3606,21 @@ int dLytMiniGame_c::doDelete() {
 int dLytMiniGame_c::execute() {
     switch (mVariant) {
         case VARIANT_BAMBOO_CUTTING:
-        case VARIANT_BAMBOO_CUTTING_RESULT:    executeBambooCutting(); break;
-        case VARIANT_FUN_FUN_ISLAND:           executeFunFunIsland(); break;
+        case VARIANT_10:                     fn_80295F90(); break;
+        case VARIANT_FUN_FUN_ISLAND:         fn_80296000(); break;
         case VARIANT_THRILL_DIGGER:
-        case VARIANT_THRILL_DIGGER_RESULT:     executeThrillDigger(); break;
+        case VARIANT_11:                     fn_80296070(); break;
         case VARIANT_INSECT_CAPTURE:
-        case VARIANT_INSECT_CAPTURE_RESULT:    executeInsectCapture(); break;
-        case VARIANT_SPIRAL_CHARGE_TUTORIAL:   executeSpiralChargeTutorial(); break;
+        case VARIANT_12:                     fn_80296150(); break;
+        case VARIANT_SPIRAL_CHARGE_TUTORIAL: fn_80296210(); break;
         case VARIANT_PUMPKIN_ARCHERY:
-        case VARIANT_PUMPKIN_ARCHERY_RESULT:   executePumpkinArchery(); break;
+        case VARIANT_13:                     fn_802962A0(); break;
         case VARIANT_ROLLERCOASTER:
-        case VARIANT_ROLLERCOASTER_RESULT:     executeRollercoaster(); break;
+        case VARIANT_14:                     fn_80296330(); break;
         case VARIANT_BOSS_RUSH:
-        case VARIANT_BOSS_RUSH_RESULT:         executeBossRush(); break;
+        case VARIANT_15:                     fn_802963E0(); break;
         case VARIANT_TRIAL_TIME_ATTACK:
-        case VARIANT_TRIAL_TIME_ATTACK_RESULT: executeTrialTimeAttack(); break;
+        case VARIANT_16:                     fn_80296480(); break;
     }
 
     mScore.execute();
@@ -3650,7 +3650,7 @@ int dLytMiniGame_c::draw() {
     return SUCCEEDED;
 }
 
-void dLytMiniGame_c::scoreRelatedInit() {
+void dLytMiniGame_c::scoreRelatedExecute() {
     switch (mVariant) {
         case VARIANT_BAMBOO_CUTTING:
         case VARIANT_THRILL_DIGGER:
@@ -3664,13 +3664,13 @@ void dLytMiniGame_c::scoreRelatedInit() {
                 mScore.setField_0x828(false);
             }
             break;
-        case VARIANT_BAMBOO_CUTTING_RESULT:
-        case VARIANT_THRILL_DIGGER_RESULT:
-        case VARIANT_PUMPKIN_ARCHERY_RESULT: mScore.startAlphaIn();
+        case VARIANT_10:
+        case VARIANT_11:
+        case VARIANT_13: mScore.startAlphaIn();
     }
 }
 
-void dLytMiniGame_c::endScoreResult() {
+void dLytMiniGame_c::scoreRelated() {
     switch (mVariant) {
         case VARIANT_FUN_FUN_ISLAND:
             if (fn_80295DB0()) {
@@ -3679,9 +3679,9 @@ void dLytMiniGame_c::endScoreResult() {
                 mScore.startOut();
             }
             break;
-        case VARIANT_BAMBOO_CUTTING_RESULT:
-        case VARIANT_THRILL_DIGGER_RESULT:
-        case VARIANT_PUMPKIN_ARCHERY_RESULT: mScore.startAlphaOut(); break;
+        case VARIANT_10:
+        case VARIANT_11:
+        case VARIANT_13: mScore.startAlphaOut(); break;
     }
 }
 
@@ -3694,10 +3694,10 @@ void dLytMiniGame_c::setDisplayedPoints(s32 points) {
             fn_80295DB0();
             mScore.setScore(points);
             break;
-        case VARIANT_THRILL_DIGGER:          mScore.fn_80291D40(points); break;
-        case VARIANT_BAMBOO_CUTTING_RESULT:
-        case VARIANT_PUMPKIN_ARCHERY_RESULT: mScore.setScore(points); break;
-        case VARIANT_THRILL_DIGGER_RESULT:
+        case VARIANT_THRILL_DIGGER: mScore.fn_80291D40(points); break;
+        case VARIANT_10:
+        case VARIANT_13:            mScore.setScore(points); break;
+        case VARIANT_11:
             mScore.setScore(points);
             field_0x3864 = true;
             field_0x3865 = false;
@@ -3747,7 +3747,7 @@ void dLytMiniGame_c::startFinish() {
     }
 }
 
-void dLytMiniGame_c::startTimeup() {
+void dLytMiniGame_c::fn_80295A20() {
     switch (mVariant) {
         case VARIANT_BAMBOO_CUTTING:
         case VARIANT_FUN_FUN_ISLAND:
@@ -3815,15 +3815,15 @@ bool dLytMiniGame_c::isTimeupAnimDone() {
     return false;
 }
 
-void dLytMiniGame_c::setScoreUp(s32 score) {
+void dLytMiniGame_c::fn_80295B20(s32 score) {
     mScoreSd.setScoreUp(score);
 }
 
-void dLytMiniGame_c::setScoreDown(s32 score) {
+void dLytMiniGame_c::fn_80295B30(s32 score) {
     mScoreSd.setScoreDown(score);
 }
 
-void dLytMiniGame_c::timeRelatedInit() {
+void dLytMiniGame_c::timeRelatedExecute() {
     switch (mVariant) {
         case VARIANT_INSECT_CAPTURE:
         case VARIANT_PUMPKIN_ARCHERY:
@@ -3835,19 +3835,19 @@ void dLytMiniGame_c::timeRelatedInit() {
                 mTime.fn_8028DD80();
             }
             break;
-        case VARIANT_INSECT_CAPTURE_RESULT:
-        case VARIANT_ROLLERCOASTER_RESULT:
-        case VARIANT_BOSS_RUSH_RESULT:
-        case VARIANT_TRIAL_TIME_ATTACK_RESULT: mTime.startAlphaIn(); break;
+        case VARIANT_12:
+        case VARIANT_14:
+        case VARIANT_15:
+        case VARIANT_16: mTime.startAlphaIn(); break;
     }
 }
 
-void dLytMiniGame_c::endTimeResult() {
+void dLytMiniGame_c::timeRelated() {
     switch (mVariant) {
-        case VARIANT_INSECT_CAPTURE_RESULT:
-        case VARIANT_ROLLERCOASTER_RESULT:
-        case VARIANT_BOSS_RUSH_RESULT:
-        case VARIANT_TRIAL_TIME_ATTACK_RESULT: mTime.startAlphaOut(); break;
+        case VARIANT_12:
+        case VARIANT_14:
+        case VARIANT_15:
+        case VARIANT_16: mTime.startAlphaOut(); break;
     }
 }
 
@@ -3856,17 +3856,17 @@ void dLytMiniGame_c::setDisplayedTime(s32 time) {
         case VARIANT_INSECT_CAPTURE:
         case VARIANT_ROLLERCOASTER:
         case VARIANT_BOSS_RUSH:
-        case VARIANT_TRIAL_TIME_ATTACK:        mTime.setTimerValueInMilliSeconds(time); break;
-        case VARIANT_PUMPKIN_ARCHERY:          mTime.setTimerSecondsValueInMilliSeconds(time); break;
-        case VARIANT_SPIRAL_CHARGE_TUTORIAL:   mTime.setTimerSecondsValueInMilliSeconds(time); break;
-        case VARIANT_INSECT_CAPTURE_RESULT:
-        case VARIANT_ROLLERCOASTER_RESULT:
-        case VARIANT_BOSS_RUSH_RESULT:
-        case VARIANT_TRIAL_TIME_ATTACK_RESULT: mTime.setTimerValueInMilliSeconds(time); break;
+        case VARIANT_TRIAL_TIME_ATTACK:      mTime.setTimerValueInMilliSeconds(time); break;
+        case VARIANT_PUMPKIN_ARCHERY:        mTime.setTimerSecondsValueInMilliSeconds(time); break;
+        case VARIANT_SPIRAL_CHARGE_TUTORIAL: mTime.setTimerSecondsValueInMilliSeconds(time); break;
+        case VARIANT_12:
+        case VARIANT_14:
+        case VARIANT_15:
+        case VARIANT_16:                     mTime.setTimerValueInMilliSeconds(time); break;
     }
 }
 
-void dLytMiniGame_c::setBestTime(s32 time) {
+void dLytMiniGame_c::setHighscore(s32 time) {
     switch (mVariant) {
         case VARIANT_INSECT_CAPTURE:
         case VARIANT_ROLLERCOASTER:
@@ -3874,10 +3874,10 @@ void dLytMiniGame_c::setBestTime(s32 time) {
         case VARIANT_TRIAL_TIME_ATTACK:
         // case VARIANT_SPIRAL_CHARGE_TUTORIAL:
         case VARIANT_PUMPKIN_ARCHERY:
-        case VARIANT_INSECT_CAPTURE_RESULT:
-        case VARIANT_ROLLERCOASTER_RESULT:
-        case VARIANT_BOSS_RUSH_RESULT:
-        case VARIANT_TRIAL_TIME_ATTACK_RESULT: mTime.setBestTime(time); break;
+        case VARIANT_12:
+        case VARIANT_14:
+        case VARIANT_15:
+        case VARIANT_16:                mTime.setBestTime(time); break;
     }
 }
 
@@ -3889,10 +3889,10 @@ void dLytMiniGame_c::setShowBestTime(bool show) {
         case VARIANT_TRIAL_TIME_ATTACK:
         // case VARIANT_SPIRAL_CHARGE_TUTORIAL:
         case VARIANT_PUMPKIN_ARCHERY:
-        case VARIANT_INSECT_CAPTURE_RESULT:
-        case VARIANT_ROLLERCOASTER_RESULT:
-        case VARIANT_BOSS_RUSH_RESULT:
-        case VARIANT_TRIAL_TIME_ATTACK_RESULT: mTime.setShowBestTime(show); break;
+        case VARIANT_12:
+        case VARIANT_14:
+        case VARIANT_15:
+        case VARIANT_16:                mTime.setShowBestTime(show); break;
     }
 }
 
@@ -3933,7 +3933,7 @@ bool dLytMiniGame_c::isBugCollected(s32 slot) const {
 }
 
 void dLytMiniGame_c::fn_80295D80() {
-    scoreRelatedInit();
+    scoreRelatedExecute();
 }
 
 void dLytMiniGame_c::fn_80295D90(s32 points) {
@@ -3948,13 +3948,13 @@ void dLytMiniGame_c::getPumpkin(const mVec3_c &pumpkinPos, s32 unk, bool doubleS
 bool dLytMiniGame_c::fn_80295DB0() {
     bool ret = false;
     switch (mVariant) {
-        case VARIANT_BAMBOO_CUTTING_RESULT:
-        case VARIANT_THRILL_DIGGER_RESULT:
-        case VARIANT_INSECT_CAPTURE_RESULT:
-        case VARIANT_PUMPKIN_ARCHERY_RESULT:
-        case VARIANT_ROLLERCOASTER_RESULT:
-        case VARIANT_BOSS_RUSH_RESULT:
-        case VARIANT_TRIAL_TIME_ATTACK_RESULT: ret = true; break;
+        case VARIANT_10:
+        case VARIANT_11:
+        case VARIANT_12:
+        case VARIANT_13:
+        case VARIANT_14:
+        case VARIANT_15:
+        case VARIANT_16: ret = true; break;
         case VARIANT_FUN_FUN_ISLAND:
             if (!MinigameManager::GetInstance()->checkInFunFunIsland()) {
                 ret = true;
@@ -4001,7 +4001,7 @@ bool dLytMiniGame_c::isFadingOut() const {
     return ret;
 }
 
-void dLytMiniGame_c::executeBambooCutting() {
+void dLytMiniGame_c::fn_80295F90() {
     if (fn_80295DB0()) {
         // nothing
     } else {
@@ -4017,11 +4017,11 @@ void dLytMiniGame_c::executeBambooCutting() {
     }
 }
 
-void dLytMiniGame_c::executeFunFunIsland() {
+void dLytMiniGame_c::fn_80296000() {
     if (fn_80295DB0()) {
-        mScore.setResultMode(true);
+        mScore.setField_0x816(true);
     } else {
-        mScore.setResultMode(false);
+        mScore.setField_0x816(false);
         if (isPopupOpen()) {
             mScore.startOutTemp();
         } else {
@@ -4030,7 +4030,7 @@ void dLytMiniGame_c::executeFunFunIsland() {
     }
 }
 
-void dLytMiniGame_c::executeThrillDigger() {
+void dLytMiniGame_c::fn_80296070() {
     if (fn_80295DB0()) {
         if (field_0x3864 == true) {
             s32 score = mScore.getScore();
@@ -4058,7 +4058,7 @@ void dLytMiniGame_c::executeThrillDigger() {
     }
 }
 
-void dLytMiniGame_c::executeInsectCapture() {
+void dLytMiniGame_c::fn_80296150() {
     if (fn_80295DB0()) {
         // nothing
     } else {
@@ -4082,7 +4082,7 @@ void dLytMiniGame_c::executeInsectCapture() {
     }
 }
 
-void dLytMiniGame_c::executeSpiralChargeTutorial() {
+void dLytMiniGame_c::fn_80296210() {
     if (isInEvent() || isPopupOpen()) {
         mScore.startOutTemp();
         mTime.startOutTemp();
@@ -4097,7 +4097,7 @@ void dLytMiniGame_c::executeSpiralChargeTutorial() {
     }
 }
 
-void dLytMiniGame_c::executePumpkinArchery() {
+void dLytMiniGame_c::fn_802962A0() {
     if (!fn_80295DB0()) {
         if (isPopupOpen()) {
             mScore.startOutTemp();
@@ -4114,7 +4114,7 @@ void dLytMiniGame_c::executePumpkinArchery() {
     }
 }
 
-void dLytMiniGame_c::executeRollercoaster() {
+void dLytMiniGame_c::fn_80296330() {
     if (fn_80295DB0()) {
         // nothing
     } else {
@@ -4135,7 +4135,7 @@ void dLytMiniGame_c::executeRollercoaster() {
 }
 
 // These two do the same thing
-void dLytMiniGame_c::executeBossRush() {
+void dLytMiniGame_c::fn_802963E0() {
     if (fn_80295DB0()) {
         // nothing
     } else {
@@ -4155,7 +4155,7 @@ void dLytMiniGame_c::executeBossRush() {
     }
 }
 
-void dLytMiniGame_c::executeTrialTimeAttack() {
+void dLytMiniGame_c::fn_80296480() {
     if (fn_80295DB0()) {
         // nothing
     } else {
