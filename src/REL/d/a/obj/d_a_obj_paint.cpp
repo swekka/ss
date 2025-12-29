@@ -10,14 +10,15 @@
 #include "m/m_vec.h"
 #include "nw4r/g3d/res/g3d_resfile.h"
 #include "nw4r/g3d/res/g3d_resmdl.h"
+#include "rvl/MTX/mtx.h"
 #include "toBeSorted/arc_managers/oarc_manager.h"
 
 SPECIAL_ACTOR_PROFILE(OBJ_PAINT, dAcOpaint_c, fProfile::OBJ_PAINT, 0x163, 0, 0);
 
 STATE_DEFINE(dAcOpaint_c, Wait);
 
-mAng dAcOpaint_c::rotationZRelatedBatreaux = mAng::d2s(35.0025f);
-mAng dAcOpaint_c::rotationZRelatedGroose = mAng::d2s(40.0015f);
+mAng dAcOpaint_c::rotationZRelated0 = mAng::d2s(35.0025f);
+mAng dAcOpaint_c::rotationZRelated1 = mAng::d2s(40.0015f);
 
 bool dAcOpaint_c::createHeap() {
     const char *oarcName = getOarcName();
@@ -35,15 +36,15 @@ bool dAcOpaint_c::createHeap() {
 
 int dAcOpaint_c::create() {
     if (getFromParams(0, 3) == 0) {
-        mSubtype = Batreaux;
+        mSubtype = 0;
     } else {
-        mSubtype = Groose;
+        mSubtype = 1;
     }
     dAcObjBase_c::updateMatrix();
     CREATE_ALLOCATOR(dAcOpaint_c);
     mMdl.setLocalMtx(mWorldMtx);
     dBgS::GetInstance()->Regist(&mBgW, this);
-    mPaintingSwayed = false;
+    field_0x5AA = false;
     mStateMgr.changeState(StateID_Wait);
     return SUCCEEDED;
 }
@@ -74,19 +75,19 @@ void dAcOpaint_c::executeState_Wait() {
         mVec3_c deltaPosition = dAcPy_c::GetLink()->mPosition - mPosition;
         f32 distance = deltaPosition.absXZ();
         if (1000.f - distance > 0.f) {
-            if (distance < _a + 700.f && !mPaintingSwayed) {
-                if (mSubtype == Batreaux) {
-                    mRotationZRelated = rotationZRelatedBatreaux;
+            if (distance < _a + 700.f && !field_0x5AA) {
+                if (mSubtype == 0) {
+                    mRotationZRelated = rotationZRelated0;
                 } else {
-                    mRotationZRelated = rotationZRelatedGroose;
+                    mRotationZRelated = rotationZRelated1;
                 }
-                mPaintingSwayed = true;
+                field_0x5AA = true;
                 startSound(SE_Paint_LOOSE);
             }
-            mPaintingOffsetTimer = 3;
+            field_0x5A8 = 3;
             mPosition.y += 10.f;
 
-            if (mPaintingSwayed) {
+            if (field_0x5AA) {
                 mRotationZOffset = mAng(0x100);
             }
         }
@@ -97,10 +98,10 @@ void dAcOpaint_c::executeState_Wait() {
 
     mRotation.z = mRotation.z + mRotationZOffset;
 
-    if (mPaintingOffsetTimer > 0) {
-        mPaintingOffsetTimer--;
-    } else if (mPaintingOffsetTimer != -1) {
-        mPaintingOffsetTimer = -1;
+    if (field_0x5A8 > 0) {
+        field_0x5A8--;
+    } else if (field_0x5A8 != -1) {
+        field_0x5A8 = 0xFF;
         mPosition.y -= 10.f;
     }
 }
@@ -108,20 +109,16 @@ void dAcOpaint_c::executeState_Wait() {
 void dAcOpaint_c::finalizeState_Wait() {}
 
 void dAcOpaint_c::updateMatrix() {
-    mWorldMtx.transS(mPosition);
+    PSMTXTrans(mWorldMtx, mPosition.x, mPosition.y, mPosition.z);
     mWorldMtx.XrotM(mRotation.x);
     mWorldMtx.YrotM(mRotation.y);
-
     mMtx_c mtx;
-    mtx.transS(100.0f, 100.0f, 0.0f);
-
-    mWorldMtx += mtx;
+    PSMTXTrans(mtx, 100.0f, 100.0f, 0.0f);
+    PSMTXConcat(mWorldMtx, mtx, mWorldMtx);
     mWorldMtx.ZrotM(mRotation.z);
-
     mMtx_c mtx2;
-    mtx2.transS(-100.0f, -100.0f, 0.0f);
-    mWorldMtx += mtx2;
-
+    PSMTXTrans(mtx2, -100.0f, -100.0f, 0.0f);
+    PSMTXConcat(mWorldMtx, mtx2, mWorldMtx);
     mMdl.setLocalMtx(mWorldMtx);
 }
 
@@ -133,8 +130,8 @@ const char *dAcOpaint_c::getOarcName() {
 
 const char *dAcOpaint_c::getModelName() {
     switch (mSubtype) {
-        case Batreaux: return "PaintA";
-        case Groose:   return "PaintB";
-        default:       return nullptr;
+        case 0:  return "PaintA";
+        case 1:  return "PaintB";
+        default: return nullptr;
     }
 }
