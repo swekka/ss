@@ -5,7 +5,6 @@
 #include "d/a/npc/d_a_npc_talk_kensei.h"
 #include "d/col/cc/d_cc_s.h"
 #include "d/d_sc_game.h"
-#include "d/d_vec.h"
 #include "d/snd/d_snd_wzsound.h"
 #include "toBeSorted/event_manager.h"
 
@@ -64,6 +63,12 @@ int dAcOwarpHole_c::actorExecute() {
     return SUCCEEDED;
 }
 
+// copy from d_a_obj_fairy - TODO move it to a shared file
+inline static void vecCylCalc(mVec3_c &target, const mAng &rot, f32 factor) {
+    target.x += factor * rot.sin();
+    target.z += factor * rot.cos();
+}
+
 int dAcOwarpHole_c::actorExecuteInEvent() {
     mEff.holdEffect(PARTICLE_RESOURCE_ID_MAPPING_914_, mWorldMtx, nullptr, nullptr);
     holdSound(SE_WarpH_Wait);
@@ -80,7 +85,7 @@ int dAcOwarpHole_c::actorExecuteInEvent() {
             if (advance) {
                 dAcPy_c *link = dAcPy_c::GetLinkM();
                 mLinkPos = link->mPosition;
-                getXZCirclePoint(mLinkPos,cLib::targetAngleY(mPosition, link->mPosition), 330.0f);
+                vecCylCalc(mLinkPos,cLib::targetAngleY(mPosition, link->mPosition), 330.0f);
             }
             if (EventManager::isInEvent()) {
                 if (EventManager::isCurrentEvent("BeforeLastBossBattleChicken")) {

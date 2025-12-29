@@ -15,7 +15,6 @@
 #include "d/col/cc/d_cc_s.h"
 #include "d/d_player_act.h"
 #include "d/d_stage_mgr.h"
-#include "d/d_vec.h"
 #include "d/snd/d_snd_small_effect_mgr.h"
 #include "d/snd/d_snd_wzsound.h"
 #include "f/f_base.h"
@@ -56,6 +55,8 @@ STATE_DEFINE(dAcOFairy_c, CureStart);
 STATE_DEFINE(dAcOFairy_c, Cure);
 STATE_DEFINE(dAcOFairy_c, CureEnd);
 STATE_DEFINE(dAcOFairy_c, CatchDemo);
+
+static void vecCylCalc(mVec3_c &target, const mAng &rot, f32 factor);
 
 bool dAcOFairy_c::createHeap() {
     void *file = getOarcResFile("PutFairy");
@@ -439,7 +440,7 @@ void dAcOFairy_c::executeState_CureStart() {
 
         mCurePosition = link->mPosition;
         mCurePosition.y += f;
-        getXZCirclePoint(mCurePosition, mCureAngle, f);
+        vecCylCalc(mCurePosition, mCureAngle, f);
 
         mAngle.y = getXZAngleToPlayer();
 
@@ -578,7 +579,7 @@ void dAcOFairy_c::calcCurePosition(const f32 &xzOffsetTarget, const f32 &yOffset
 
     mCurePosition = link->mPosition;
     mCurePosition.y += mCurePosYOffset;
-    getXZCirclePoint(mCurePosition, mCureAngle, mCurePosXZOffset);
+    vecCylCalc(mCurePosition, mCureAngle, mCurePosXZOffset);
 
     sLib::chase(&mCurePosXZOffset, xzOffsetTarget, mCurePosXZOffsetTarget / 10.0f);
     sLib::chase(&mCurePosYOffset, yOffsetTarget, 2.0f);
@@ -626,4 +627,11 @@ bool dAcOFairy_c::shouldAvoidLink() const {
 bool dAcOFairy_c::isMovingAwayFromOrigY() const {
     return (targetSpeedY >= 0.0f && mPosition.y - mOrigPosition.y > 0.0f) ||
            (targetSpeedY <= 0.0f && mPosition.y - mOrigPosition.y < 0.0f);
+}
+
+// This is a repeated calculation, it correctly flips the stack order of the casts,
+// and it avoids temporaries, so it's a pretty good inline candidate
+inline static void vecCylCalc(mVec3_c &target, const mAng &rot, f32 factor) {
+    target.x += factor * rot.sin();
+    target.z += factor * rot.cos();
 }
