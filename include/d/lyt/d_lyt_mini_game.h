@@ -11,7 +11,7 @@
 /** 2D UI - Mini Game - Pumpkin score popup */
 class dLytMiniGamePumpkinParts_c {
 public:
-    dLytMiniGamePumpkinParts_c() : field_0x154(false), mHasPlayedDoubleScoreSound(false) {}
+    dLytMiniGamePumpkinParts_c() {}
     virtual ~dLytMiniGamePumpkinParts_c() {}
 
     bool build(d2d::ResAccIf_c *resAcc);
@@ -45,7 +45,7 @@ private:
 /** 2D UI - Mini Game - Pumpkin score popups */
 class dLytMiniGamePumpkin_c {
 public:
-    dLytMiniGamePumpkin_c() : field_0x478(10), mCombo(0) {}
+    dLytMiniGamePumpkin_c() {}
     virtual ~dLytMiniGamePumpkin_c() {}
 
     bool build(d2d::ResAccIf_c *resAcc);
@@ -68,14 +68,7 @@ private:
 /** 2D UI - Mini Game - Bug Heaven */
 class dLytMiniGameBugs_c {
 public:
-    dLytMiniGameBugs_c()
-        : mBugIconsInEnded(false),
-          mInTriggered(false),
-          mBugIconsFlashStarted(false),
-          mBugsNumLevel(1),
-          mBugsNum(10),
-          field_0xB4B(false),
-          field_0xB4C(true) {}
+    dLytMiniGameBugs_c() {}
     virtual ~dLytMiniGameBugs_c() {}
 
     bool build(d2d::ResAccIf_c *resAcc);
@@ -146,19 +139,7 @@ private:
 /** 2D UI - Mini Game - Time */
 class dLytMiniGameTime_c {
 public:
-    dLytMiniGameTime_c()
-        : field_0x7D4(0),
-          mCurrentTimerValueMilliSeconds(0),
-          mCurrentTimerValueSeconds(0),
-          mLastTimerValueSeconds(0),
-          mTimerVariant(0),
-          mHighestDigitIndex(0),
-          field_0x7EC(false),
-          field_0x7ED(false),
-          field_0x7EE(false),
-          field_0x7F0(0),
-          field_0x7F4(0),
-          mIsVisible(false) {}
+    dLytMiniGameTime_c() {}
     virtual ~dLytMiniGameTime_c() {}
 
     bool build(d2d::ResAccIf_c *resAcc);
@@ -237,7 +218,7 @@ private:
 /** 2D UI - Mini Game - Start / Finish Popup */
 class dLytMiniGameStart_c {
 public:
-    dLytMiniGameStart_c() : mIsVisible(false) {}
+    dLytMiniGameStart_c() {}
     virtual ~dLytMiniGameStart_c() {}
 
     bool build(d2d::ResAccIf_c *resAcc);
@@ -279,34 +260,7 @@ private:
 /** 2D UI - Mini Game - Score counter */
 class dLytMiniGameScore_c {
 public:
-    dLytMiniGameScore_c()
-        : mScore(0),
-          mLastScore(0),
-          mHighestDigitIndex(0),
-          field_0x7E4(0),
-          field_0x7E8(0.0f),
-          field_0x7EC(-2),
-          field_0x7F0(0),
-          field_0x7F4(0),
-          field_0x7F8(-1),
-          field_0x7FC(1),
-          field_0x800(0),
-          field_0x804(false),
-          field_0x808(0),
-          field_0x80C(0),
-          field_0x810(0),
-          field_0x814(false),
-          field_0x815(false),
-          field_0x816(false),
-          field_0x818(0),
-          field_0x81C(0),
-          field_0x820(false),
-          field_0x824(0),
-          field_0x828(false),
-          field_0x829(false),
-          field_0x82C(0),
-          field_0x830(1),
-          mIsVisible(false) {}
+    dLytMiniGameScore_c() {}
     virtual ~dLytMiniGameScore_c() {}
 
     bool build(d2d::ResAccIf_c *resAcc);
@@ -322,47 +276,47 @@ private:
     void fn_80291740();
     void startAlphaIn();
     void startAlphaOut();
-    void startGetScore();
-    void startFinish();
+    void fn_80291960();
+    void fn_80291A30();
     void startLoop();
-    void setScore(s32 score);
+    void fn_80291BA0(s32 score);
     void fn_80291BC0();
     void fn_80291D40(s32 arg);
-    bool hasIncreasedScore() const;
-    bool hasDecreasedScore() const;
-    void fn_80291ED0(s32);
+    bool fn_80291E50() const;
+    void fn_80291E90();
+    void fn_80291ED0();
     void fn_80291EF0();
-    void increaseScore(s32);
+    void fn_80292030(s32);
     void fn_80292040();
-    s32 calcNumDigits();
-    void realizePosition();
+    void fn_802920B0();
+    void fn_80292110();
     void setDigit(s32 digitIndex, s32 number);
-    void saveScore();
-    void resetIn();
-    void resetDigits();
-    void resetOut();
-    void resetAlphaIn();
-    void resetAlphaOut();
-    void resetSetPosition();
-    void resetRupeeChange();
-    void resetGetScore();
-    void resetFinish();
-    void resetLoop();
-    void stopIn();
-    void stopOut();
-    void stopAlphaIn();
-    void stopAlphaOut();
-    void stopGetScore();
-    void stopFinish();
-    void stopLoop();
-    bool isInEndReached() const;
-    bool isOutEndReached() const;
-    bool isAlphaInEndReached() const;
-    bool isAlphaOutEndReached() const;
-    bool isGetScoreEndReached() const;
-    bool isFinishEndReached() const;
+    void fn_80292240();
+    void fn_80292250();
+    void fn_802922F0();
+    void fn_80292380();
+    void fn_80292400();
+    void fn_80292480();
+    void fn_80292500();
+    void fn_80292590();
+    void fn_80292610();
+    void fn_80292710();
+    void fn_80292880();
+    void fn_80292910();
+    void fn_80292920();
+    bool fn_80292930() const;
+    void fn_80292940();
+    void fn_80292950();
+    void fn_802929C0();
+    void fn_80292A40();
+    bool fn_80292A50() const;
+    bool fn_80292AA0() const;
+    bool fn_80292AF0() const;
+    bool fn_80292B40() const;
+    bool fn_80292B90() const;
+    bool fn_80292BE0() const;
     void fn_80292C30();
-    void loadTextVariant(s32 variant);
+    void fn_802933A0(s32 variant);
     void fn_80293410();
     void fn_80293450(s32);
 
@@ -377,16 +331,15 @@ private:
 
     /* 0x7CC */ dTextBox_c *mpTextBoxes[3];
 
-    /* 0x7D8 */ s32 mScore;
-    /* 0x7DC */ s32 mLastScore;
-    /* 0x7E0 */ s32 mHighestDigitIndex;
+    /* 0x7D8 */ s32 field_0x7D8;
+    
+    /* 0x7DC */ UNKWORD field_0x7DC;
+    /* 0x7E0 */ s32 field_0x7E0;
     /* 0x7E4 */ UNKWORD field_0x7E4;
 
     /* 0x7E8 */ f32 field_0x7E8;
-    /* 0x7EC */ s32 field_0x7EC;
-    /* 0x7F0 */ s32 field_0x7F0;
-    /* 0x7F4 */ s32 field_0x7F4;
-    /* 0x7F8 */ s32 field_0x7F8;
+    /* 0x7EC */ u8 _0x7EC[0x7FC - 0x7EC];
+
     /* 0x7FC */ s32 field_0x7FC;
     /* 0x800 */ s32 field_0x800;
     /* 0x804 */ bool field_0x804;
@@ -411,7 +364,7 @@ private:
 /** 2D UI - Mini Game - Fun Fun Island score */
 class dLytMiniGameScoreSd_c {
 public:
-    dLytMiniGameScoreSd_c() : field_0x1D4(0), mIsVisible(false) {}
+    dLytMiniGameScoreSd_c() {}
     virtual ~dLytMiniGameScoreSd_c() {}
 
     bool build(d2d::ResAccIf_c *resAcc);
@@ -425,7 +378,7 @@ private:
 
     void fn_80293A30();
     void fn_80293A90();
-    void fn_80293AF0(s32);
+    void fn_80293AF0();
     void fn_80293BB0();
     void fn_80293C60();
     void fn_80293D40();
@@ -436,14 +389,11 @@ private:
     void fn_80293FB0();
     void fn_80294010();
     void fn_80294020();
-    bool fn_80294030() const;
-    bool fn_80294080() const;
+    void fn_80294030();
+    void fn_80294080();
 
     /* 0x004 */ d2d::LytBase_c mLyt;
     /* 0x094 */ d2d::AnmGroup_c mAnm[5];
-    /* 0x1D4 */ s32 field_0x1D4;
-    /* 0x1D8 */ bool mIsVisible;
-    /* 0x1D9 */ bool field_0x1D9;
 };
 
 class dLytMiniGame_c : public dBase_c {
@@ -455,12 +405,7 @@ public:
           field_0x006B(0),
           field_0x006C(0),
           field_0x006D(0),
-          field_0x1510(1),
-          field_0x3864(0),
-          field_0x3865(0),
-          field_0x3866(false),
-          field_0x3867(0),
-          field_0x3868(0) {}
+          field_0x1510(1) {}
     virtual ~dLytMiniGame_c() {}
 
     static dLytMiniGame_c *GetInstance() {
@@ -520,11 +465,11 @@ private:
     /* 0x209C */ dLytMiniGameTime_c mTime;
     /* 0x2894 */ dLytMiniGameBugs_c mBugs;
     /* 0x33E4 */ dLytMiniGamePumpkin_c mPumpkin;
-    /* 0x3864 */ u8 field_0x3864;
-    /* 0x3865 */ u8 field_0x3865;
-    /* 0x3866 */ bool field_0x3866;
-    /* 0x3867 */ u8 field_0x3867;
-    /* 0x3868 */ u8 field_0x3868;
+
+    // TODO
+    u8 _0x___[0xA];
+
+    bool field_0x3866;
 };
 
 #endif
