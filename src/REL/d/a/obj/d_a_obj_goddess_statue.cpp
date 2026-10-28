@@ -87,4 +87,4 @@ void dAcOGoddessStatue_c::executeState_Wait() {
 
 void dAcOGoddessStatue_c::finalizeState_Wait() {}
 
-void dAcOGoddessStatue_c::vt_0x88(f32 &param) {}
+void dAcOGoddessStatue_c::vt_0x88(const f32 &param) {}

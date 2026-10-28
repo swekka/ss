@@ -27,9 +27,9 @@ f32 dAcOSwordCandle_c::lbl_530_data_0 = 0.f;
 
 SPECIAL_ACTOR_PROFILE(OBJ_SWORD_CANDLE, dAcOSwordCandle_c, fProfile::OBJ_SWORD_CANDLE, 0x24C, 0, 7);
 
-u16 dAcOSwordCandle_c::lbl_530_bss_8[6] = {
-    PARTICLE_RESOURCE_ID_MAPPING_333_, PARTICLE_RESOURCE_ID_MAPPING_332_, PARTICLE_RESOURCE_ID_MAPPING_497_,
-    PARTICLE_RESOURCE_ID_MAPPING_496_, PARTICLE_RESOURCE_ID_MAPPING_308_, PARTICLE_RESOURCE_ID_MAPPING_307_,
+u16 dAcOSwordCandle_c::flameParticleIDs[6] = {
+    PARTICLE_RESOURCE_ID_MAPPING_333_, GREEN_FLAME, PARTICLE_RESOURCE_ID_MAPPING_497_, BLUE_FLAME,
+    PARTICLE_RESOURCE_ID_MAPPING_308_, RED_FLAME,
 };
 
 STATE_DEFINE(dAcOSwordCandle_c, Wait);
@@ -70,12 +70,12 @@ int dAcOSwordCandle_c::actorCreate() {
     mCyl.SetStts(mStts);
     mAcceleration = 0.f;
     mMaxSpeed = -40.f;
-    field_0x814 = getFromParams(0x8, 0xF);
-    if (field_0x814 >= 3) {
-        field_0x814 = 0;
+    flameIdx = getFromParams(0x8, 0xF);
+    if (flameIdx >= 3) {
+        flameIdx = 0;
     }
     mEmitter.init(this);
-    field_0x810 = lbl_530_bss_8[field_0x814 * 2 + 1];
+    mFireEmitterResID = flameParticleIDs[flameIdx * 2 + 1];
     if (mRiseFromGroundSceneflag < 0xFF &&
         !SceneflagManager::sInstance->checkBoolFlag(mRoomID, mRiseFromGroundSceneflag)) {
         mStateMgr.changeState(StateID_WaitClear);
@@ -87,32 +87,32 @@ int dAcOSwordCandle_c::actorCreate() {
     mMdl.calc(true);
     nw4r::g3d::ResMdl mdl = mMdl.getResMdl();
     u32 id = mdl.GetResNode("loc_Effect").GetID();
-    mMdl.getNodeWorldMtxMultVecZero(id, field_0x7F0);
-    if (mRiseFromGroundSceneflag >= 0xff ||
+    mMdl.getNodeWorldMtxMultVecZero(id, mFireEmitterPos);
+    if (mRiseFromGroundSceneflag >= 0xFF ||
         SceneflagManager::sInstance->checkBoolFlag(mRoomID, mRiseFromGroundSceneflag)) {
         setCrestAtBone("SetGS", &mMdl, &mActivatedSceneflag);
         field_0x818 = 1;
     }
-    if (mActivatedSceneflag < 0xff && SceneflagManager::sInstance->checkBoolFlag(mRoomID, mActivatedSceneflag)) {
+    if (mActivatedSceneflag < 0xFF && SceneflagManager::sInstance->checkBoolFlag(mRoomID, mActivatedSceneflag)) {
         unsetActorProperty(AC_PROP_0x1);
         field_0x816 = 1;
     }
     mMdl.setPriorityDraw(0x1C, 9);
     mBoundingBox.Set(mVec3_c(-150.f, -20.f, -150.f), mVec3_c(150.f, 500.f, 150.f));
-    field_0x7DC.mPos = field_0x7F0;
+    field_0x7DC.mPos = mFireEmitterPos;
     field_0x7DC.mRadius = 0.f;
     dLightEnv_c::GetPInstance()->shadow_set(&field_0x7DC);
     return SUCCEEDED;
 }
 
 int dAcOSwordCandle_c::actorPostCreate() {
-    if (field_0x814 == 1) {
+    if (flameIdx == 1) {
         mMtx_c mtx;
         mtx.ZXYrotS(mRotation);
         mVec3_c out;
         mtx.multVecSR(mVec3_c::Ey, out);
-        mVec3_c a = mPosition + out * 100.f;
-        if (dBgS_ObjGndChk::CheckPos(a)) {
+        mVec3_c tmp = mPosition + out * 100.f;
+        if (dBgS_ObjGndChk::CheckPos(tmp)) {
             mPosition.y = dBgS_ObjGndChk::GetGroundHeight();
             if (dBgS::GetInstance()->ChkMoveBG(dBgS_ObjGndChk::GetInstance(), false)) {
                 field_0x7B0.SetPolyInfo(dBgS_ObjGndChk::GetInstance());
@@ -128,27 +128,27 @@ int dAcOSwordCandle_c::doDelete() {
 }
 
 int dAcOSwordCandle_c::actorExecute() {
-    if (field_0x814 == 1 && dBgS::GetInstance()->ChkMoveBG(field_0x7B0, true)) {
+    if (flameIdx == 1 && dBgS::GetInstance()->ChkMoveBG(field_0x7B0, true)) {
         dBgS::GetInstance()->MoveBgTransPos(field_0x7B0, true, &mPosition, nullptr, nullptr);
         if (field_0x818) {
             setCrestPosRot(&mMdl);
         }
     }
     mStateMgr.executeState();
-    if (field_0x814 == 1) {
+    if (flameIdx == 1) {
         updateMatrix();
         mMdl.setLocalMtx(mWorldMtx);
         mMdl.calc(false);
         nw4r::g3d::ResMdl mdl = mMdl.getResMdl();
         nw4r::g3d::ResNode resNode = mdl.GetResNode("loc_Effect");
-        mMdl.getNodeWorldMtxMultVecZero(resNode.GetID(), field_0x7F0);
+        mMdl.getNodeWorldMtxMultVecZero(resNode.GetID(), mFireEmitterPos);
     }
     mBgW.Move();
     return SUCCEEDED;
 }
 
 int dAcOSwordCandle_c::actorExecuteInEvent() {
-    if (field_0x814 == 1 && dBgS::GetInstance()->ChkMoveBG(field_0x7B0, true)) {
+    if (flameIdx == 1 && dBgS::GetInstance()->ChkMoveBG(field_0x7B0, true)) {
         dBgS::GetInstance()->MoveBgTransPos(field_0x7B0, true, &mPosition, nullptr, nullptr);
         if (field_0x818) {
             setCrestPosRot(&mMdl);
@@ -157,7 +157,7 @@ int dAcOSwordCandle_c::actorExecuteInEvent() {
     if (mEvent.isThisActorInEvent()) {
         switch (mEvent.getCurrentEventCommand()) {
             case 'fire': {
-                field_0x810 = lbl_530_bss_8[field_0x814 * 2 + 1];
+                mFireEmitterResID = flameParticleIDs[flameIdx * 2 + 1];
                 mEvent.advanceNext();
                 break;
             }
@@ -171,11 +171,11 @@ int dAcOSwordCandle_c::actorExecuteInEvent() {
             }
         }
     }
-    if (mActivatedSceneflag < 0xff && SceneflagManager::sInstance->checkBoolFlag(mRoomID, mActivatedSceneflag) &&
+    if (mActivatedSceneflag < 0xFF && SceneflagManager::sInstance->checkBoolFlag(mRoomID, mActivatedSceneflag) &&
         field_0x817) {
-        mEmitter.holdEffect(field_0x810, field_0x7F0, &mRotation, &mScale, nullptr, nullptr);
+        mEmitter.holdEffect(mFireEmitterResID, mFireEmitterPos, &mRotation, &mScale, nullptr, nullptr);
         holdSound(SE_SdCdl_FIRE_LV);
-        field_0x7DC.mPos = field_0x7F0;
+        field_0x7DC.mPos = mFireEmitterPos;
         field_0x7DC.mRadius = 1000.f;
     }
     return SUCCEEDED;
@@ -183,7 +183,7 @@ int dAcOSwordCandle_c::actorExecuteInEvent() {
 
 void dAcOSwordCandle_c::registerInEvent() {
     if (EventManager::sInstance->isCurrentEvent("SwordCandle")) {
-        dAcPy_c::LINK->setObjectProperty(OBJ_PROP_0x200);
+        dAcPy_c::GetLinkM()->setObjectProperty(OBJ_PROP_0x200);
         return;
     }
     if (EventManager::sInstance->isCurrentEvent("GodsMark") || EventManager::sInstance->isCurrentEvent("SceneChange") ||
@@ -196,7 +196,7 @@ void dAcOSwordCandle_c::registerInEvent() {
 
 void dAcOSwordCandle_c::unkVirtFunc_0x6C() {
     if (dAcPy_c::GetLink()->checkObjectProperty(OBJ_PROP_0x200)) {
-        dAcPy_c::LINK->unsetObjectProperty(OBJ_PROP_0x200);
+        dAcPy_c::GetLinkM()->unsetObjectProperty(OBJ_PROP_0x200);
     }
     field_0x817 = 0;
 }
@@ -211,10 +211,10 @@ void dAcOSwordCandle_c::initializeState_Wait() {
 }
 
 void dAcOSwordCandle_c::executeState_Wait() {
-    if (mActivatedSceneflag < 0xff && SceneflagManager::sInstance->checkBoolFlag(mRoomID, mActivatedSceneflag)) {
-        mEmitter.holdEffect(field_0x810, field_0x7F0, &mRotation, &mScale, nullptr, nullptr);
+    if (mActivatedSceneflag < 0xFF && SceneflagManager::sInstance->checkBoolFlag(mRoomID, mActivatedSceneflag)) {
+        mEmitter.holdEffect(mFireEmitterResID, mFireEmitterPos, &mRotation, &mScale, nullptr, nullptr);
         holdSound(SE_SdCdl_FIRE_LV);
-        field_0x7DC.mPos = field_0x7F0;
+        field_0x7DC.mPos = mFireEmitterPos;
         field_0x7DC.mRadius = 1000.f;
     }
 }
@@ -244,11 +244,9 @@ void dAcOSwordCandle_c::finalizeState_WaitClear() {
     unsetObjectProperty(OBJ_PROP_0x200);
     nw4r::g3d::ResMdl mdl = mMdl.getResMdl();
     nw4r::g3d::ResNode resNode = mdl.GetResNode("loc_Effect");
-    mMdl.getNodeWorldMtxMultVecZero(resNode.GetID(), field_0x7F0);
+    mMdl.getNodeWorldMtxMultVecZero(resNode.GetID(), mFireEmitterPos);
     field_0x818 = 1;
 }
-
-f32 dAcOSwordCandle_c::lbl_530_data_F0 = 255.f;
 
 void dAcOSwordCandle_c::fn_530_1180() {
     dAcOstageKraken_c *stageKraken = dAcOstageKraken_c::GetInstance();
@@ -260,13 +258,13 @@ void dAcOSwordCandle_c::fn_530_1180() {
     mEvent.getSingleIntData(&out, 'cut ', 0);
     switch (out) {
         case 0: {
-            stageKraken->field_0x1A30 = 1;
-            stageKraken->mActorProperties |= 4;
+            stageKraken->setField_0x1A30(1);
+            stageKraken->setActorProperty(AC_PROP_0x4);
             mEvent.advanceNext();
             break;
         }
         case 1: {
-            if (stageKraken->mMarkLeftRight != 0 && mTimer == 0) {
+            if (stageKraken->getMarkLeftRight() != 0 && mTimer == 0) {
                 dJEffManager_c::spawnEffect(
                     PARTICLE_RESOURCE_ID_MAPPING_941_, mPosition, nullptr, nullptr, nullptr, nullptr, 0, 0
                 );
@@ -274,7 +272,7 @@ void dAcOSwordCandle_c::fn_530_1180() {
                 field_0x7DC.mPos = mPosition;
                 field_0x7DC.mRadius = 1000.f;
             }
-            if (stageKraken->mMarkLeftRight != 0 && sLib::calcTimer(&mTimer) == 0) {
+            if (stageKraken->getMarkLeftRight() != 0 && sLib::calcTimer(&mTimer) == 0) {
                 mMdl.setTevColorAll(GX_TEVREG2, mColor(0, 0, 0, 0xFF), false);
                 field_0x7FC = mPosition;
                 mPosition = mPosition - vec * 200.f;
@@ -286,16 +284,16 @@ void dAcOSwordCandle_c::fn_530_1180() {
                 mMdl.setLocalMtx(mWorldMtx);
                 mMdl.calc(false);
                 setCrestAtBone("SetGS", &mMdl, &mActivatedSceneflag);
-                vt_0x88(lbl_530_data_F0);
+                vt_0x88(255.f);
                 dAcOSwSwordBeam_c *swSwordBeam = mSwSwordBeamRef.get();
-                swSwordBeam->mActorProperties |= 4;
+                swSwordBeam->setActorProperty(AC_PROP_0x4);
                 mEvent.advanceNext();
             }
             break;
         }
         case 2: {
             if (field_0x808 == 120.f) {
-                stageKraken->field_0x1A32 = 1;
+                stageKraken->setField_0x1A32(1);
                 field_0x80C = 255.f;
             } else if (field_0x808 > 120.f) {
                 sLib::chase(&field_0x80C, 0.f, 12.75);
@@ -305,8 +303,8 @@ void dAcOSwordCandle_c::fn_530_1180() {
             if (sLib::chase(&field_0x808, 200.f, 2.f)) {
                 mStateMgr.changeState(StateID_Wait);
                 dAcOSwSwordBeam_c *swSwordBeam = mSwSwordBeamRef.get();
-                swSwordBeam->mActorProperties &= ~0x4;
-                stageKraken->mActorProperties &= ~0x4;
+                swSwordBeam->unsetActorProperty(AC_PROP_0x4);
+                stageKraken->unsetActorProperty(AC_PROP_0x4);
                 mEvent.advanceNext();
             }
             mPosition = field_0x7FC - vec * (200.f - field_0x808);
@@ -318,7 +316,7 @@ void dAcOSwordCandle_c::fn_530_1180() {
     }
 }
 
-void dAcOSwordCandle_c::vt_0x88(f32 &param) {
+void dAcOSwordCandle_c::vt_0x88(const f32 &param) {
     dAcOSwSwordBeam_c *swSwordBeam = mSwSwordBeamRef.get();
     swSwordBeam->setField_0xC90(param);
     swSwordBeam->setField_0xCAA(true);

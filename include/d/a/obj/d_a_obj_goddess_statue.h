@@ -21,7 +21,7 @@ public:
     virtual int actorExecute() override;
     virtual int actorExecuteInEvent() override;
     virtual int draw() override;
-    virtual void vt_0x88(f32 &param) override;
+    virtual void vt_0x88(const f32 &param) override;
 
     STATE_FUNC_DECLARE(dAcOGoddessStatue_c, Wait);
 

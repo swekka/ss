@@ -25,7 +25,7 @@ public:
     virtual void registerInEvent() override;
     virtual void unkVirtFunc_0x6C() override;
     virtual int draw() override;
-    virtual void vt_0x88(f32 &param) override;
+    virtual void vt_0x88(const f32 &param) override;
 
     STATE_FUNC_DECLARE(dAcOSwordCandle_c, Wait);
     STATE_FUNC_DECLARE(dAcOSwordCandle_c, WaitClear);
@@ -43,20 +43,20 @@ private:
     /* 0x77C */ dEmitter_c mEmitter;
     /* 0x7B0 */ cBgS_PolyInfo field_0x7B0;
     /* 0x7DC */ SHADOW_INFLUENCE field_0x7DC;
-    /* 0x7F0 */ mVec3_c field_0x7F0;
+    /* 0x7F0 */ mVec3_c mFireEmitterPos;
     /* 0x7FC */ mVec3_c field_0x7FC;
-    /* 0x808 */ float field_0x808;
-    /* 0x80C */ float field_0x80C;
-    /* 0x810 */ u16 field_0x810;
+    /* 0x808 */ f32 field_0x808;
+    /* 0x80C */ f32 field_0x80C;
+    /* 0x810 */ u16 mFireEmitterResID;
     /* 0x812 */ u8 mActivatedSceneflag;
     /* 0x813 */ u8 mRiseFromGroundSceneflag;
-    /* 0x814 */ u8 field_0x814;
+    /* 0x814 */ u8 flameIdx;
     /* 0x815 */ u8 mTimer;
     /* 0x816 */ u8 field_0x816;
     /* 0x817 */ u8 field_0x817;
     /* 0x818 */ u8 field_0x818;
 
-    static u16 lbl_530_bss_8[6];
+    static u16 flameParticleIDs[6];
     static f32 lbl_530_data_0;
     static dCcD_SrcCyl sCylSrc;
     static f32 lbl_530_data_F0;

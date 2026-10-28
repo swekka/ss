@@ -72,7 +72,7 @@ int dAcOSwSwordBeam_c::create() {
     mUnk2.Set(sCcSrc);
     mUnk2.SetStts(mStts);
     mUnk2.SetTg_0x4C(~0x800000);
-    mUnk2.SetTgType(0x800002);
+    mUnk2.SetTgType(AT_TYPE_SWORD | AT_TYPE_0x800000);
     mUnk2.mCo.OffSPrm(1);
     mUnk2.Set(mVec3_c(-100.f, 10.f, -150.f), mVec3_c(100.f, 120.f, 150.f));
     mAcceleration = -1.f;
@@ -181,7 +181,7 @@ int dAcOSwSwordBeam_c::actorExecuteInEvent() {
 
 void dAcOSwSwordBeam_c::registerInEvent() {
     if (EventManager::sInstance->isCurrentEvent("SwSwordBeam")) {
-        dAcPy_c *link = dAcPy_c::LINK;
+        dAcPy_c *link = dAcPy_c::GetLinkM();
         mAng angle = link->mRotation.y;
         link->setObjectProperty(OBJ_PROP_0x200);
 
@@ -197,7 +197,7 @@ void dAcOSwSwordBeam_c::registerInEvent() {
 }
 
 void dAcOSwSwordBeam_c::unkVirtFunc_0x6C() {
-    dAcPy_c *link = dAcPy_c::LINK;
+    dAcPy_c *link = dAcPy_c::GetLinkM();
     if (field_0xCAC && getSquareDistToPlayer() < 160000.f) {
         mVec3_c pos(link->mPosition);
         mAng rot = mRotation.y - 0x8000;
@@ -231,21 +231,11 @@ void dAcOSwSwordBeam_c::initializeState_Wait() {
 
 void dAcOSwSwordBeam_c::executeState_Wait() {
     if (mUnk1.ChkTgHit()) {
-        if (!mUnk1.ChkTgAtHitType(AT_TYPE_SWORD) || !mUnk1.ChkTgBit25()) {
-            if (!mUnk1.ChkTgAtHitType(AT_TYPE_0x800000)) {
-                goto LAB_80e4e72c;
-            }
-        }
-        if (mSubtype != 0) {
-            if (!isleOfSongsCanGetHit()) {
-                goto LAB_80e4e72c;
-            }
-        }
-        if (!field_0xCAB) {
+        if (((mUnk1.ChkTgAtHitType(AT_TYPE_SWORD) && mUnk1.ChkTgBit25()) || mUnk1.ChkTgAtHitType(AT_TYPE_0x800000)) &&
+            (mSubtype == 0 || isleOfSongsCanGetHit()) && !field_0xCAB) {
             field_0xCAB = true;
         }
     }
-LAB_80e4e72c:
     if (mUnk1.ChkTgHit()) {
         field_0xC96.mVal += lbl_507_data_50;
     }
@@ -303,7 +293,7 @@ void dAcOSwSwordBeam_c::executeState_RotateEnd() {
 
 void dAcOSwSwordBeam_c::finalizeState_RotateEnd() {
     if (mSubtype == 0) {
-        if (mSceneflag < 0xff && !SceneflagManager::sInstance->checkBoolFlag(mRoomID, mSceneflag)) {
+        if (mSceneflag < 0xFF && !SceneflagManager::sInstance->checkBoolFlag(mRoomID, mSceneflag)) {
             SceneflagManager::sInstance->setFlag(mRoomID, mSceneflag);
         }
     } else if (mSubtype == 1) {
@@ -329,7 +319,7 @@ void dAcOSwSwordBeam_c::finalizeState_RotateEnd() {
                 break;
             }
         }
-        if (checkSceneFlag && sceneflag < 0xff && !SceneflagManager::sInstance->checkBoolFlag(mRoomID, sceneflag)) {
+        if (checkSceneFlag && sceneflag < 0xFF && !SceneflagManager::sInstance->checkBoolFlag(mRoomID, sceneflag)) {
             SceneflagManager::sInstance->setFlag(mRoomID, sceneflag);
         }
     }
@@ -344,7 +334,7 @@ void dAcOSwSwordBeam_c::initializeState_OnSwitch() {
     field_0xC96.mVal = 0;
     field_0xC94.mVal = 0;
     field_0xC98.mVal = 0;
-    mMdl.setTevKColorAll(GX_KCOLOR3, nw4r::ut::Color(0x40, 0xc0, 0xff, 0xff), false);
+    mMdl.setTevKColorAll(GX_KCOLOR3, nw4r::ut::Color(0x40, 0xc0, 0xFF, 0xFF), false);
     mVec3_c tmp = mPosition + (mVec3_c::Ey * (field_0xC88 + 75.f));
     dJEffManager_c::spawnEffect(PARTICLE_RESOURCE_ID_MAPPING_352_, tmp, &mRotation, &mScale, nullptr, nullptr, 0, 0);
     startSound(SE_SwSB_REACT_FIN);
@@ -354,7 +344,7 @@ void dAcOSwSwordBeam_c::executeState_OnSwitch() {
     if (sLib::calcTimer(&mTimer) != 0) {
         f32 multiplier = mTimer / 60.f;
         mMdl.setTevKColorAll(
-            GX_KCOLOR3, nw4r::ut::Color(multiplier * 64.f, multiplier * 192.f, multiplier * 255.f, 0xff), false
+            GX_KCOLOR3, nw4r::ut::Color(multiplier * 64.f, multiplier * 192.f, multiplier * 255.f, 0xFF), false
         );
     } else {
         mStateMgr.changeState(StateID_End);
@@ -374,7 +364,7 @@ void dAcOSwSwordBeam_c::executeState_End() {
     }
     if (!EventManager::sInstance->isInEvent() && mSubtype == 1) {
         u16 flag = mSceneflag + 2;
-        if (flag >= 0xff || !SceneflagManager::sInstance->checkBoolFlag(mRoomID, flag)) {
+        if (flag >= 0xFF || !SceneflagManager::sInstance->checkBoolFlag(mRoomID, flag)) {
             mStateMgr.changeState(StateID_Wait);
         }
     }
@@ -508,4 +498,4 @@ void dAcGoddessCrestHolder_c::setCrestPosRot(m3d::smdl_c *mdl) {
 
 dAcOSwSwordBeam_c::~dAcOSwSwordBeam_c() {};
 
-void dAcGoddessCrestHolder_c::vt_0x88(f32 &param) {}
+void dAcGoddessCrestHolder_c::vt_0x88(const f32 &param) {}

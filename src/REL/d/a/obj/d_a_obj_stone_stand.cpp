@@ -143,7 +143,7 @@ int dAcOStoneStand_c::actorExecute() {
 }
 
 int dAcOStoneStand_c::actorExecuteInEvent() {
-    dAcPy_c *link = dAcPy_c::LINK;
+    dAcPy_c *link = dAcPy_c::GetLinkM();
     bool act2 = false;
     if (mEvent.isThisActorInEvent()) {
         switch (mEvent.getCurrentEventCommand()) {
@@ -163,7 +163,7 @@ int dAcOStoneStand_c::actorExecuteInEvent() {
                         if (targetPos.squareDistanceToXZ(link->mPosition) < 50.f &&
                             mAng(mRotation.y - mAng(targetAng)).abs() < 0xB6) {
                             link->setPosRot(&mLinkPos, &mLinkRot, false, 0, 0);
-                            updateExecutePriority((*fProfile::sProfileList)[200]->m_execute_order + 1);
+                            updateExecutePriority((*fProfile::sProfileList)[fProfile::PLAYER]->m_execute_order + 1);
                             mEvent.advanceNext();
                         }
                     } else {
@@ -191,7 +191,7 @@ int dAcOStoneStand_c::actorExecuteInEvent() {
                     if (link->getCurrentAnimFrame() > 90.f) {
                         mAnm[mVisibleTabletState].setRate(1.f, 0);
                         mEvent.advanceNext();
-                        updateExecutePriority((*fProfile::sProfileList)[0x7A]->m_execute_order);
+                        updateExecutePriority((*fProfile::sProfileList)[fProfile::OBJ_STONE_STAND]->m_execute_order);
                     }
                 }
                 break;
@@ -324,4 +324,4 @@ bool dAcOStoneStand_c::canInsertTablet() {
            (mTabletCSIndex == 2 && !StoryflagManager::sInstance->getFlag(STORYFLAG_LANAYRU_PILLAR_OPENED));
 }
 
-void dAcOStoneStand_c::vt_0x88(f32 &param) {}
+void dAcOStoneStand_c::vt_0x88(const f32 &param) {}

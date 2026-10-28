@@ -22,6 +22,16 @@ private:
     /* 0x??? */ STATE_MGR_DECLARE(dAcOstageKraken_c);
 
 public:
+    void setField_0x1A30(u8 val) {
+        field_0x1A30 = val;
+    }
+    u8 getMarkLeftRight() {
+        return mMarkLeftRight;
+    }
+    void setField_0x1A32(u8 val) {
+        field_0x1A32 = val;
+    }
+
     u8 pad[0x16C4];
     /* 0x1A30 */ u8 field_0x1A30;
     /* 0x1A31 */ u8 mMarkLeftRight;

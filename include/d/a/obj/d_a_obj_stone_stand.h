@@ -24,7 +24,7 @@ public:
     virtual int actorExecuteInEvent() override;
     virtual int draw() override;
     virtual void doInteraction(s32) override;
-    virtual void vt_0x88(f32 &param) override;
+    virtual void vt_0x88(const f32 &param) override;
 
     STATE_FUNC_DECLARE(dAcOStoneStand_c, Wait);
     STATE_FUNC_DECLARE(dAcOStoneStand_c, Shake);

@@ -22,7 +22,7 @@ protected:
 
     virtual void setCrestAtBone(char *bone_name, m3d::smdl_c *model, u8 *sceneflag);
     virtual void setCrestPosRot(m3d::smdl_c *mdl);
-    virtual void vt_0x88(f32 &param);
+    virtual void vt_0x88(const f32 &param);
 
     /* 0x330 */ dAcRef_c<dAcOSwSwordBeam_c> mSwSwordBeamRef;
     /* 0x33C */ u32 mBoneID;
